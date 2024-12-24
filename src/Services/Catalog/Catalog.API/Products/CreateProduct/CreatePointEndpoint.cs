@@ -2,7 +2,7 @@
 
 namespace Catalog.API.Products.CreateProduct
 {
-    public record CreateProductRequest(string Name, List<string> Catergory, string Description, string ImageFile, Decimal Price)
+    public record CreateProductRequest(string Name, List<string> Category, string Description, string ImageFile, Decimal Price)
     : ICommand<CreateProductResponse>;
 
     public record CreateProductResponse(Guid id);
@@ -16,7 +16,12 @@ namespace Catalog.API.Products.CreateProduct
                 var result = await sender.Send(command);
                 var response = result.Adapt<CreateProductResponse>();
                 return Results.Created($"/products/{response.id}", response);
-            });
+            })
+            .WithName("CreateProduct")
+            .Produces<CreateProductResponse>(StatusCodes.Status201Created)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .WithSummary("Create Product")
+            .WithDescription("Create Product"); ;
         }
     }
 }
