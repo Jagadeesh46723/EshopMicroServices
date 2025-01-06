@@ -21,4 +21,4 @@ namespace Catalog.API.Products.GetProductById
             .WithDescription("Get Product By Id");
         }
     }
-}
+}              
